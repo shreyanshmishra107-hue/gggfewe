@@ -16,7 +16,6 @@
       width: 100vw;
       overflow: hidden;
       font-family: system-ui, -apple-system, sans-serif;
-      color: white;
     }
     .shaka-video-container {
       position: absolute;
@@ -31,7 +30,7 @@
       object-fit: contain;
     }
 
-    /* Hide default spinner */
+    /* Hide spinner */
     .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg {
       display: none !important;
     }
@@ -41,7 +40,7 @@
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
       backdrop-filter: blur(8px);
       display: flex;
       justify-content: center;
@@ -50,30 +49,29 @@
     }
     .modal.hidden { display: none !important; }
     .modal-content {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 32px 28px;
+      background: rgba(20,20,30,0.95);
+      border: 1px solid #444;
+      border-radius: 18px;
+      padding: 30px 25px;
       width: 90%;
-      max-width: 420px;
+      max-width: 400px;
       text-align: center;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      color: #eee;
     }
-    .modal-content h2 { font-size: 26px; margin-bottom: 12px; color: #facc15; }
-    .modal-content p { font-size: 16px; line-height: 1.5; margin-bottom: 24px; color: #ddd; }
+    .modal-content h2 { color: #facc15; margin-bottom: 12px; }
+    .modal-content p { margin-bottom: 24px; line-height: 1.5; }
     .btn {
       width: 100%;
       padding: 14px;
-      font-size: 17px;
+      font-size: 16px;
       border: none;
       border-radius: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       cursor: pointer;
       transition: 0.3s;
     }
-    #joinButton { background: linear-gradient(to right, #3b82f6, #06b6d4); color: white; font-weight: 600; }
-    #joinButton:hover { transform: scale(1.03); }
-    #closeButton { background: rgba(255,255,255,0.1); color: white; }
+    #joinButton { background: linear-gradient(to right, #1e88e5, #00acc1); color: white; font-weight: 600; }
+    #refreshBtn { background: #d32f2f; color: white; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -82,15 +80,15 @@
   <div id="telegramModal" class="modal">
     <div class="modal-content">
       <h2>Join Our Telegram</h2>
-      <p>Stay updated with fast live match links, scores &amp; more.<br>Get instant access to working streams.</p>
+      <p>Stay updated with working live links, scores &amp; fast streams for all matches.</p>
       <a id="joinLink" href="https://t.me/+RSjqR7v1laE1ZTJl" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block">
         <button id="joinButton" class="btn">Join Telegram Channel</button>
       </a>
-      <button id="closeButton" class="btn">Maybe Later</button>
+      <button id="closeButton" class="btn" style="background:rgba(255,255,255,0.1);">Maybe Later</button>
     </div>
   </div>
 
-  <!-- Shaka Player Container -->
+  <!-- Player Container -->
   <div class="shaka-video-container" data-shaka-player-container>
     <video autoplay playsinline preload="metadata"></video>
   </div>
@@ -98,37 +96,41 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const video = document.querySelector('video');
+      let playerInstance = null;
 
-      // ================== HDNEA COOKIE ==================
+      // ================== COOKIE (HDNEA) ==================
       const COOKIE_URL = 'https://matcheslinkz.pages.dev/cookie.json';
       let cookieHeader = '';
 
       async function fetchCookie() {
         try {
           const res = await fetch(COOKIE_URL + '?t=' + Date.now());
-          if (!res.ok) throw new Error('Failed');
+          if (!res.ok) throw new Error();
           const data = await res.json();
-          if (data?.cookieHeader) {
+          if (data && data.cookieHeader) {
             cookieHeader = data.cookieHeader;
-            console.log('✅ HDNEA token loaded');
+            console.log('✅ HDNEA token updated');
+            return true;
           }
         } catch (e) {
-          console.warn('Cookie fetch failed - stream may not work');
+          console.warn('⚠️ Failed to fetch HDNEA cookie');
         }
+        return false;
       }
 
       await fetchCookie();
-      setInterval(fetchCookie, 4 * 60 * 1000); // Refresh every 4 minutes
+      setInterval(fetchCookie, 5 * 60 * 1000); // Refresh every 5 min
 
-      // ================== SHAKA PLAYER SETUP ==================
+      // ================== SHAKA PLAYER ==================
       shaka.polyfill.installAll();
 
       if (!shaka.Player.isBrowserSupported()) {
-        alert("Your browser doesn't support this player. Please use latest Chrome.");
+        alert("Browser not supported. Please use latest Google Chrome.");
         return;
       }
 
       const player = new shaka.Player();
+      playerInstance = player;
       await player.attach(video);
 
       const container = document.querySelector('.shaka-video-container');
@@ -137,12 +139,12 @@
       ui.configure({
         controlPanelElements: [
           'play_pause', 'time_and_duration', 'mute', 'volume',
-          'spacer', 'captions', 'quality', 'fullscreen'
+          'spacer', 'quality', 'fullscreen'
         ],
         seekBarColors: {
-          base: '#555',
+          base: '#444',
           buffered: '#666',
-          played: '#00ff00'
+          played: '#00ff88'
         }
       });
 
@@ -158,10 +160,10 @@
         drm: drmConfig,
         streaming: {
           lowLatencyMode: true,
-          bufferingGoal: 20,
+          bufferingGoal: 18,
           rebufferingGoal: 2,
           bufferBehind: 15,
-          retryParameters: { timeout: 15000, maxAttempts: 6, baseDelay: 500 }
+          retryParameters: { timeout: 12000, maxAttempts: 5 }
         }
       });
 
@@ -173,7 +175,7 @@
           request.headers['Cookie'] = cookieHeader;
           if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
                type === shaka.net.NetworkingEngine.RequestType.SEGMENT) &&
-              !request.uris[0].includes('__hdnea__=')) {
+              !request.uris[0].includes('__hdnea__')) {
             const sep = request.uris[0].includes('?') ? '&' : '?';
             request.uris[0] += sep + cookieHeader;
           }
@@ -182,23 +184,19 @@
 
       try {
         await player.load(streamUrl);
-        console.log('✅ Stream loaded successfully');
+        console.log('✅ Manchester City vs Liverpool stream loaded');
 
-        // Try to autoplay
+        // Auto play
         setTimeout(() => {
-          video.play().catch(() => console.log("Autoplay prevented - tap screen to play"));
-        }, 800);
+          video.play().catch(err => console.log("Autoplay blocked:", err));
+        }, 1000);
 
-        // Try fullscreen on mobile
-        if (video.requestFullscreen && /Mobi|Android/i.test(navigator.userAgent)) {
-          setTimeout(() => video.requestFullscreen().catch(() => {}), 1500);
-        }
       } catch (err) {
-        console.error('Load failed:', err);
-        alert("Stream failed to load. The HDNEA token may have expired. Try refreshing the page.");
+        console.error('Load Error:', err);
+        alert("Stream failed to load.\nThe token might be expired.\nTry clicking 'Refresh Stream' below.");
       }
 
-      // ================== MODAL LOGIC ==================
+      // ================== MODAL ==================
       const modal = document.getElementById('telegramModal');
       const closeBtn = document.getElementById('closeButton');
       const joinLink = document.getElementById('joinLink');
@@ -208,11 +206,36 @@
       }
 
       closeBtn.addEventListener('click', hideModal);
-      joinLink.addEventListener('click', () => setTimeout(hideModal, 800));
-      modal.addEventListener('click', e => { if (e.target === modal) hideModal(); });
+      joinLink.addEventListener('click', hideModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
 
-      // Auto hide after 8 seconds
-      setTimeout(hideModal, 8000);
+      setTimeout(hideModal, 8000); // Auto hide after 8 seconds
+
+      // ================== REFRESH BUTTON (Added for easy fix) ==================
+      const refreshBtn = document.createElement('button');
+      refreshBtn.textContent = '🔄 Refresh Stream';
+      refreshBtn.style.cssText = `
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        padding: 12px 24px; background: #d32f2f; color: white; border: none;
+        border-radius: 30px; font-size: 16px; z-index: 10000; cursor: pointer;
+      `;
+      document.body.appendChild(refreshBtn);
+
+      refreshBtn.addEventListener('click', async () => {
+        refreshBtn.textContent = 'Refreshing...';
+        await fetchCookie();
+        if (playerInstance) {
+          try {
+            await playerInstance.unload();
+            await playerInstance.load(streamUrl);
+            video.play().catch(() => {});
+            alert('Stream refreshed! If still not working, try again in 10 seconds.');
+          } catch (e) {
+            alert('Refresh failed. Please try reopening the page.');
+          }
+        }
+        refreshBtn.textContent = '🔄 Refresh Stream';
+      });
     });
   </script>
 </body>
