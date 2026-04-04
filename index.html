@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sony Sports Ten 3 HD</title>
+
+  <!-- Shaka Player -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      background: #000;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .shaka-video-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      object-fit: contain;
+    }
+
+    /* Hide unwanted spinners */
+    .shaka-spinner-container,
+    .shaka-spinner,
+    .shaka-spinner-svg {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: fadeIn 0.5s ease;
+    }
+    .modal.hidden { display: none !important; }
+    .modal-content {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 30px 25px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      color: #f3f4f6;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+      transform: scale(0.95);
+      animation: scaleIn 0.4s ease forwards;
+    }
+    .modal-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #facc15;
+      margin-bottom: 16px;
+    }
+    .modal-content p {
+      font-size: 16px;
+      color: #d1d5db;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .modal-content strong { color: #fff; }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    #joinButton {
+      background: linear-gradient(to right, #3b82f6, #06b6d4);
+      color: #fff;
+      font-weight: 500;
+    }
+    #joinButton:hover {
+      background: linear-gradient(to right, #2563eb, #0891b2);
+      transform: scale(1.02);
+    }
+    #closeButton {
+      background: rgba(255,255,255,0.1);
+      color: #f3f4f6;
+    }
+    #closeButton:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.02);
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleIn { to { transform: scale(1); opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <!-- Telegram Modal -->
+  <div id="telegramModal" class="modal">
+    <div class="modal-content">
+      <h2>Join our Telegram</h2>
+      <p>Stay updated with the latest <strong>Live Match Links</strong> and updates.<br>Click below to join our official Telegram channel.</p>
+      <a id="joinLink" href="https://t.me/+RSjqR7v1laE1ZTJl" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block">
+        <button id="joinButton" class="btn">Join Telegram</button>
+      </a>
+      <button id="closeButton" class="btn">Maybe Later</button>
+    </div>
+  </div>
+
+  <!-- Video Container -->
+  <div class="shaka-video-container" data-shaka-player-container>
+    <video autoplay playsinline preload="metadata"></video>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const video = document.querySelector('video');
+
+      // ================== COOKIE MANAGEMENT ==================
+      const COOKIE_URL = 'https://matcheslinkz.pages.dev/cookie.json';
+      let cookieHeader = '';
+
+      async function fetchAndUpdateCookie() {
+        try {
+          const response = await fetch(COOKIE_URL + '?t=' + Date.now());
+          if (!response.ok) throw new Error('Failed to fetch cookie');
+          const data = await response.json();
+          if (data && data.cookieHeader) {
+            cookieHeader = data.cookieHeader;
+            console.log('✅ HDNEA cookie updated');
+          }
+        } catch (err) {
+          console.warn('Cookie fetch failed, using previous if available:', err);
+        }
+      }
+
+      // Refresh cookie every 5 minutes
+      setInterval(fetchAndUpdateCookie, 5 * 60 * 1000);
+      await fetchAndUpdateCookie(); // Initial fetch
+
+      // ================== SHAKA PLAYER SETUP ==================
+      shaka.polyfill.installAll();
+
+      if (!shaka.Player.isBrowserSupported()) {
+        console.error('❌ Shaka Player not supported in this browser');
+        return;
+      }
+
+      const player = new shaka.Player();
+      await player.attach(video);
+
+      const container = document.querySelector('.shaka-video-container');
+      const ui = new shaka.ui.Overlay(player, container, video);
+
+      ui.configure({
+        controlPanelElements: [
+          'play_pause', 'time_and_duration', 'mute', 'volume',
+          'spacer', 'language', 'captions', 'picture_in_picture',
+          'quality', 'fullscreen'
+        ],
+        volumeBarColors: { base: 'rgba(63, 187, 1, 1)', level: 'rgb(255, 69, 0)' },
+        seekBarColors: {
+          base: 'rgb(41, 41, 163)',
+          buffered: 'rgb(35, 99, 3)',
+          played: 'rgba(63, 187, 1, 1)'
+        }
+      });
+
+      // DRM ClearKey (if needed)
+      const drmConfig = {
+        clearKeys: {
+          "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
+        }
+      };
+
+      const streamUrl = "https://jiotvioslive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/output/index.mpd";
+
+      player.configure({
+        drm: drmConfig,
+        streaming: {
+          lowLatencyMode: true,
+          bufferingGoal: 15,
+          rebufferingGoal: 2,
+          bufferBehind: 15,
+          retryParameters: { timeout: 10000, maxAttempts: 5, baseDelay: 300, backoffFactor: 1.2 },
+          segmentRequestTimeout: 8000,
+          segmentPrefetchLimit: 2
+        }
+      });
+
+      // Request Filter - Add Referer, User-Agent & Cookie
+      player.getNetworkingEngine().registerRequestFilter((type, request) => {
+        request.headers['Referer'] = 'https://www.jiotv.com/';
+        request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+
+        if (cookieHeader) {
+          request.headers['Cookie'] = cookieHeader;
+
+          if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
+               type === shaka.net.NetworkingEngine.RequestType.SEGMENT) &&
+              request.uris[0] && !request.uris[0].includes('__hdnea__=')) {
+            const separator = request.uris[0].includes('?') ? '&' : '?';
+            request.uris[0] += separator + cookieHeader;
+          }
+        }
+      });
+
+      try {
+        await player.load(streamUrl);
+        console.log('✅ Stream loaded successfully');
+
+        // Try autoplay
+        video.play().catch(() => {
+          console.log('Autoplay blocked - user interaction needed');
+        });
+      } catch (error) {
+        console.error('❌ Load error:', error);
+      }
+
+      // ================== TELEGRAM MODAL ==================
+      const modal = document.getElementById('telegramModal');
+      const closeBtn = document.getElementById('closeButton');
+      const joinLink = document.getElementById('joinLink');
+
+      function hideModal() {
+        modal.classList.add('hidden');
+        video.play().catch(() => {});
+      }
+
+      closeBtn.addEventListener('click', hideModal);
+      joinLink.addEventListener('click', hideModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+
+      // Auto hide modal after 10 seconds
+      setTimeout(hideModal, 10000);
+    });
+  </script>
+</body>
+</html>
