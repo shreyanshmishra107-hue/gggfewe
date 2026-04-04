@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sony Sports Ten 3 HD - Live</title>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -16,6 +14,7 @@
       width: 100vw;
       overflow: hidden;
       font-family: system-ui, -apple-system, sans-serif;
+      color: white;
     }
     .shaka-video-container {
       position: absolute;
@@ -30,17 +29,35 @@
       object-fit: contain;
     }
 
-    /* Hide spinner */
+    /* Hide default spinner */
     .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg {
       display: none !important;
     }
 
-    /* Modal */
+    /* Better seek bar / timeline styling */
+    .shaka-seek-bar-container {
+      height: 6px !important;
+    }
+    .shaka-range-container {
+      background: #555 !important;
+    }
+    .shaka-played-range {
+      background: #00ff00 !important;
+    }
+    .shaka-buffered-range {
+      background: #666 !important;
+    }
+    .shaka-seek-bar-container input[type="range"]::-webkit-slider-thumb {
+      background: #00ff00;
+      box-shadow: 0 0 8px #00ff00;
+    }
+
+    /* Modal styles remain same */
     .modal {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.7);
       backdrop-filter: blur(8px);
       display: flex;
       justify-content: center;
@@ -49,46 +66,46 @@
     }
     .modal.hidden { display: none !important; }
     .modal-content {
-      background: rgba(20,20,30,0.95);
-      border: 1px solid #444;
-      border-radius: 18px;
-      padding: 30px 25px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 32px 28px;
       width: 90%;
-      max-width: 400px;
+      max-width: 420px;
       text-align: center;
-      color: #eee;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
     }
-    .modal-content h2 { color: #facc15; margin-bottom: 12px; }
-    .modal-content p { margin-bottom: 24px; line-height: 1.5; }
+    .modal-content h2 { font-size: 26px; margin-bottom: 12px; color: #facc15; }
+    .modal-content p { font-size: 16px; line-height: 1.5; margin-bottom: 24px; color: #ddd; }
     .btn {
       width: 100%;
       padding: 14px;
-      font-size: 16px;
+      font-size: 17px;
       border: none;
       border-radius: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       cursor: pointer;
       transition: 0.3s;
     }
-    #joinButton { background: linear-gradient(to right, #1e88e5, #00acc1); color: white; font-weight: 600; }
-    #refreshBtn { background: #d32f2f; color: white; margin-top: 10px; }
+    #joinButton { background: linear-gradient(to right, #3b82f6, #06b6d4); color: white; font-weight: 600; }
+    #joinButton:hover { transform: scale(1.03); }
+    #closeButton { background: rgba(255,255,255,0.1); color: white; }
   </style>
 </head>
 <body>
-
   <!-- Telegram Modal -->
   <div id="telegramModal" class="modal">
     <div class="modal-content">
       <h2>Join Our Telegram</h2>
-      <p>Stay updated with working live links, scores &amp; fast streams for all matches.</p>
+      <p>Stay updated with fast live match links, scores &amp; more.<br>Get instant access to working streams.</p>
       <a id="joinLink" href="https://t.me/+RSjqR7v1laE1ZTJl" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block">
         <button id="joinButton" class="btn">Join Telegram Channel</button>
       </a>
-      <button id="closeButton" class="btn" style="background:rgba(255,255,255,0.1);">Maybe Later</button>
+      <button id="closeButton" class="btn">Maybe Later</button>
     </div>
   </div>
 
-  <!-- Player Container -->
+  <!-- Shaka Player Container -->
   <div class="shaka-video-container" data-shaka-player-container>
     <video autoplay playsinline preload="metadata"></video>
   </div>
@@ -96,56 +113,50 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const video = document.querySelector('video');
-      let playerInstance = null;
+      const container = document.querySelector('.shaka-video-container');
 
-      // ================== COOKIE (HDNEA) ==================
+      // ================== HDNEA COOKIE ==================
       const COOKIE_URL = 'https://matcheslinkz.pages.dev/cookie.json';
       let cookieHeader = '';
-
       async function fetchCookie() {
         try {
           const res = await fetch(COOKIE_URL + '?t=' + Date.now());
-          if (!res.ok) throw new Error();
+          if (!res.ok) throw new Error('Failed');
           const data = await res.json();
-          if (data && data.cookieHeader) {
+          if (data?.cookieHeader) {
             cookieHeader = data.cookieHeader;
-            console.log('✅ HDNEA token updated');
-            return true;
+            console.log('✅ HDNEA token loaded');
           }
         } catch (e) {
-          console.warn('⚠️ Failed to fetch HDNEA cookie');
+          console.warn('Cookie fetch failed');
         }
-        return false;
       }
-
       await fetchCookie();
-      setInterval(fetchCookie, 5 * 60 * 1000); // Refresh every 5 min
+      setInterval(fetchCookie, 4 * 60 * 1000);
 
-      // ================== SHAKA PLAYER ==================
+      // ================== SHAKA PLAYER SETUP ==================
       shaka.polyfill.installAll();
-
       if (!shaka.Player.isBrowserSupported()) {
-        alert("Browser not supported. Please use latest Google Chrome.");
+        alert("Your browser doesn't support this player. Please use latest Chrome.");
         return;
       }
 
-      const player = new shaka.Player();
-      playerInstance = player;
-      await player.attach(video);
-
-      const container = document.querySelector('.shaka-video-container');
+      const player = new shaka.Player(video);
       const ui = new shaka.ui.Overlay(player, container, video);
 
+      // Improved UI Configuration
       ui.configure({
         controlPanelElements: [
           'play_pause', 'time_and_duration', 'mute', 'volume',
-          'spacer', 'quality', 'fullscreen'
+          'spacer', 'captions', 'quality', 'fullscreen'
         ],
+        addSeekBar: true,                    // Ensure seek bar is enabled
         seekBarColors: {
-          base: '#444',
-          buffered: '#666',
-          played: '#00ff88'
-        }
+          base: '#555',
+          buffered: '#888',
+          played: '#00ff00'
+        },
+        overflowMenuButtons: ['quality', 'captions']
       });
 
       const drmConfig = {
@@ -160,22 +171,21 @@
         drm: drmConfig,
         streaming: {
           lowLatencyMode: true,
-          bufferingGoal: 18,
+          bufferingGoal: 20,
           rebufferingGoal: 2,
           bufferBehind: 15,
-          retryParameters: { timeout: 12000, maxAttempts: 5 }
+          retryParameters: { timeout: 15000, maxAttempts: 6, baseDelay: 500 }
         }
       });
 
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
         request.headers['Referer'] = 'https://www.jiotv.com/';
         request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
-
         if (cookieHeader) {
           request.headers['Cookie'] = cookieHeader;
-          if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
+          if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
                type === shaka.net.NetworkingEngine.RequestType.SEGMENT) &&
-              !request.uris[0].includes('__hdnea__')) {
+              !request.uris[0].includes('__hdnea__=')) {
             const sep = request.uris[0].includes('?') ? '&' : '?';
             request.uris[0] += sep + cookieHeader;
           }
@@ -184,19 +194,38 @@
 
       try {
         await player.load(streamUrl);
-        console.log('✅ Manchester City vs Liverpool stream loaded');
+        console.log('✅ Stream loaded successfully');
 
-        // Auto play
         setTimeout(() => {
-          video.play().catch(err => console.log("Autoplay blocked:", err));
-        }, 1000);
+          video.play().catch(() => console.log("Autoplay prevented"));
+        }, 800);
+
+        // ================== IMPROVED FULLSCREEN ==================
+        const requestFullscreen = async () => {
+          try {
+            if (container.requestFullscreen) {
+              await container.requestFullscreen();        // Better: use container
+            } else if (container.webkitRequestFullscreen) {
+              await container.webkitRequestFullscreen();
+            } else if (video.requestFullscreen) {
+              await video.requestFullscreen();
+            }
+          } catch (e) {
+            console.log("Fullscreen request failed:", e);
+          }
+        };
+
+        // Auto fullscreen attempt on mobile
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+          setTimeout(requestFullscreen, 1200);
+        }
 
       } catch (err) {
-        console.error('Load Error:', err);
-        alert("Stream failed to load.\nThe token might be expired.\nTry clicking 'Refresh Stream' below.");
+        console.error('Load failed:', err);
+        alert("Stream failed to load. Try refreshing the page.");
       }
 
-      // ================== MODAL ==================
+      // ================== MODAL LOGIC ==================
       const modal = document.getElementById('telegramModal');
       const closeBtn = document.getElementById('closeButton');
       const joinLink = document.getElementById('joinLink');
@@ -206,36 +235,10 @@
       }
 
       closeBtn.addEventListener('click', hideModal);
-      joinLink.addEventListener('click', hideModal);
-      modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+      joinLink.addEventListener('click', () => setTimeout(hideModal, 800));
+      modal.addEventListener('click', e => { if (e.target === modal) hideModal(); });
 
-      setTimeout(hideModal, 8000); // Auto hide after 8 seconds
-
-      // ================== REFRESH BUTTON (Added for easy fix) ==================
-      const refreshBtn = document.createElement('button');
-      refreshBtn.textContent = '🔄 Refresh Stream';
-      refreshBtn.style.cssText = `
-        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-        padding: 12px 24px; background: #d32f2f; color: white; border: none;
-        border-radius: 30px; font-size: 16px; z-index: 10000; cursor: pointer;
-      `;
-      document.body.appendChild(refreshBtn);
-
-      refreshBtn.addEventListener('click', async () => {
-        refreshBtn.textContent = 'Refreshing...';
-        await fetchCookie();
-        if (playerInstance) {
-          try {
-            await playerInstance.unload();
-            await playerInstance.load(streamUrl);
-            video.play().catch(() => {});
-            alert('Stream refreshed! If still not working, try again in 10 seconds.');
-          } catch (e) {
-            alert('Refresh failed. Please try reopening the page.');
-          }
-        }
-        refreshBtn.textContent = '🔄 Refresh Stream';
-      });
+      setTimeout(hideModal, 8000);
     });
   </script>
 </body>
