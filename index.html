@@ -1,234 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sony Sports Ten 3 HD - Live</title>
-
-  <!-- Shaka Player -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css">
-
+  <title>Star Sports 2 HD</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
+    html, body {
       background: #000;
       height: 100vh;
+      width: 100vw;
       overflow: hidden;
-      font-family: Arial, sans-serif;
+      font-family: system-ui, -apple-system, sans-serif;
     }
-
-    .player-container {
+    .shaka-video-container {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
     }
-
     video {
       width: 100%;
       height: 100%;
-      object-fit: contain;
       background: #000;
+      object-fit: contain;
     }
-
-    /* Remove default loader */
     .shaka-spinner-container,
-    .shaka-spinner {
+    .shaka-spinner,
+    .shaka-spinner-svg {
       display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
     }
-
-    /* Custom loader */
-    .loader {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.7);
-      z-index: 5;
-    }
-
-    .loader::after {
-      content: "";
-      width: 50px;
-      height: 50px;
-      border: 5px solid #fff;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .hidden { display: none !important; }
-
-    /* Modal */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .modal-box {
-      background: rgba(255,255,255,0.1);
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    .modal-box h2 {
-      color: #facc15;
-      margin-bottom: 10px;
-    }
-
-    .modal-box p {
-      color: #ddd;
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    .join { background: linear-gradient(to right, #3b82f6, #06b6d4); color: white; }
-    .close { background: rgba(255,255,255,0.1); color: white; }
   </style>
 </head>
-
 <body>
-
-  <!-- Loader -->
-  <div id="loader" class="loader"></div>
-
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-box">
-      <h2>Join Telegram</h2>
-      <p>Get live match links instantly.</p>
-      <a href="https://t.me/+RSjqR7v1laE1ZTJl" target="_blank">
-        <button class="btn join">Join Now</button>
-      </a>
-      <button id="closeModal" class="btn close">Maybe Later</button>
-    </div>
-  </div>
-
-  <!-- Player -->
-  <div class="player-container">
-    <video id="video" autoplay muted playsinline></video>
+  <div class="shaka-video-container" data-shaka-player>
+ <video autoplay playsinline preload="metadata" poster=""></video>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-
-      const video = document.getElementById("video");
-      const loader = document.getElementById("loader");
-
-      let cookieHeader = "";
-      const COOKIE_URL = "https://matcheslinkz.pages.dev/cookie.json";
-      const STREAM = "https://jiotvioslive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/output/index.mpd";
-
-      // ========= Fetch Cookie =========
-      async function loadCookie() {
-        try {
-          const res = await fetch(COOKIE_URL, { cache: "no-store" });
-          const data = await res.json();
-          if (data.cookieHeader) {
-            cookieHeader = data.cookieHeader;
-            console.log("Cookie loaded");
-          }
-        } catch {
-          console.warn("Cookie fetch failed");
-        }
-      }
-
-      await loadCookie();
-      setInterval(loadCookie, 240000);
-
-      // ========= Init Player =========
+    document.addEventListener('DOMContentLoaded', async () => {
       shaka.polyfill.installAll();
 
       if (!shaka.Player.isBrowserSupported()) {
-        alert("Browser not supported");
+        console.error('Browser not supported');
         return;
       }
 
-      const player = new shaka.Player(video);
+      const video = document.querySelector('video');
+      const player = new shaka.Player();
+      await player.attach(video);
 
-      // UI
-      const ui = new shaka.ui.Overlay(player, document.querySelector(".player-container"), video);
+      const container = document.querySelector('.shaka-video-container');
+      const ui = new shaka.ui.Overlay(player, container, video);
 
       ui.configure({
         controlPanelElements: [
-          "play_pause","time_and_duration","mute","volume","spacer","quality","fullscreen"
-        ]
+          'play_pause', 'time_and_duration', 'mute', 'volume',
+          'spacer', 'language', 'captions', 'picture_in_picture',
+          'quality', 'fullscreen'
+        ],
+        volumeBarColors: {
+  base: 'purple',
+  level: 'purple'
+},
+seekBarColors: {
+  base: 'gold',
+  buffered: 'gold',
+  played: 'gold'
+}
       });
 
-      // Config
-      player.configure({
-        drm: {
-          clearKeys: {
-            "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
-          }
-        },
-        streaming: {
-          lowLatencyMode: true,
-          bufferingGoal: 15,
-          rebufferingGoal: 2
+      let drmConfig = {
+        clearKeys: {
+          "71719eea0bbb5319a4e854ac52ea7871": "752ed8f45c43ed858af4c1716c05241a"
         }
-      });
+      };
+      let cookieHeader = "__hdnea__=st=1775270880~exp=1775357280~acl=/*~hmac=4932665943e964ce03c71c7326375837236fd480775c1297123e77eff49c0b53";
+      let streamUrl = "https://jiotvioslive.cdn.jio.com/bpk-tv/Ten3_HD_BTS/output/index.mpd";
 
-      // Headers
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        request.headers["Referer"] = "https://www.jiotv.com/";
-        if (cookieHeader) request.headers["Cookie"] = cookieHeader;
+        request.headers['Referer'] = 'https://www.jiotv.com/';
+        request.headers['User-Agent'] = "plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6";
+        request.headers['Cookie'] = cookieHeader;
+        if (
+          (type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
+            type === shaka.net.NetworkingEngine.RequestType.SEGMENT) &&
+          request.uris[0] && !request.uris[0].includes('__hdnea=')
+        ) {
+          const separator = request.uris[0].includes('?') ? '&' : '?';
+          request.uris[0] += separator + cookieHeader;
+        }
       });
 
-      // ========= Load Stream =========
-      async function start() {
+      const enableAutoplay = () => {
+        video.setAttribute('autoplay', '');
+        video.setAttribute('playsinline', '');
+        video.autoplay = true;
+      };
+
+      const attemptAutoplay = async () => {
         try {
-          loader.classList.remove("hidden");
-
-          await player.load(STREAM);
-
+          video.muted = false;
           await video.play();
-
-          loader.classList.add("hidden");
-
-          console.log("Stream running");
-
-        } catch (e) {
-          console.error("Error loading stream", e);
-          setTimeout(start, 5000); // retry
+          console.log('Unmuted autoplay successful');
+          return true;
+        } catch (error) {
+          console.log('Unmuted autoplay failed:', error.message);
+          try {
+            video.muted = true;
+            await video.play();
+            console.log('Muted autoplay successful');
+            return true;
+          } catch (mutedError) {
+            console.log('Muted autoplay failed:', mutedError.message);
+            return false;
+          }
         }
+      };
+
+      player.addEventListener('error', (event) => {
+        console.error('Shaka Player Error:', event.detail);
+      });
+
+      video.addEventListener('play', () => {
+        if (window.self === window.top && !document.fullscreenElement && window.innerWidth <= 768) {
+          container.requestFullscreen().catch(() => {
+            console.log('Fullscreen request failed');
+          });
+        }
+      }, { once: true });
+
+      video.addEventListener('loadedmetadata', () => {
+        video.volume = 0.8;
+      });
+
+      let hasUserInteracted = false;
+      const enableSoundOnInteraction = () => {
+        if (!hasUserInteracted && video.muted) {
+          video.muted = false;
+          hasUserInteracted = true;
+          console.log('Sound enabled after user interaction');
+        }
+      };
+      ['click', 'touchstart', 'keydown'].forEach(event => {
+        document.addEventListener(event, enableSoundOnInteraction, { once: true });
+      });
+
+      try {
+        enableAutoplay();
+        await player.load(streamUrl);
+        if (video.readyState >= 3) {
+          await attemptAutoplay();
+        } else {
+          video.addEventListener('canplay', attemptAutoplay, { once: true });
+          setTimeout(async () => {
+            if (video.paused) {
+              await attemptAutoplay();
+            }
+          }, 2000);
+        }
+      } catch (error) {
+        console.error('Load error:', error);
       }
 
-      start();
-
-      // ========= Modal =========
-      const modal = document.getElementById("modal");
-      document.getElementById("closeModal").onclick = () => modal.classList.add("hidden");
-
-      setTimeout(() => modal.classList.add("hidden"), 8000);
-
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && video.paused) {
+          attemptAutoplay();
+        }
+      });
     });
   </script>
-
 </body>
 </html>
