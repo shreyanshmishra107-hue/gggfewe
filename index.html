@@ -1,12 +1,9 @@
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Star Sports 2 HD</title>
+  <title>Sony Sports Ten 2 HD</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
@@ -40,7 +37,7 @@
       opacity: 0 !important;
     }
 
-    /* Modal */
+    /* Chrome Only Modal */
     .modal {
       position: fixed;
       top: 0;
@@ -57,8 +54,8 @@
     }
     .modal.hidden { display: none !important; }
     .modal-content {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.3);
       border-radius: 20px;
       padding: 30px 25px;
       width: 90%;
@@ -70,62 +67,24 @@
       transform: scale(.95);
       animation: scaleIn .4s ease forwards;
     }
-    .modal-content h2 { font-size: 24px; font-weight: 700; color: #facc15; margin-bottom: 16px; }
-    .modal-content p { font-size: 16px; color: #d1d5db; margin-bottom: 24px; line-height: 1.5; }
-    .modal-content strong { color: #fff; }
-    .modal-content .btn { width: 100%; padding: 12px; font-size: 16px; border: none; border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: .3s; display: inline-block; }
-    #joinButton { background: linear-gradient(to right,#3b82f6,#06b6d4); color: #fff; font-weight: 500; }
-    #joinButton:hover { background: linear-gradient(to right,#2563eb,#0891b2); transform: scale(1.02); }
-    #closeButton { background: rgba(255,255,255,0.1); color: #f3f4f6; }
-    #closeButton:hover { background: rgba(255,255,255,0.15); transform: scale(1.02); }
+    .modal-content h2 {
+      color: #f87171;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .modal-content p {
+      font-size: 16px;
+      color: #d1d5db;
+      line-height: 1.5;
+    }
 
     @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
     @keyframes scaleIn { to { transform: scale(1); opacity: 1 } }
-
-    /* Banner */
-    .tg-banner {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      background: linear-gradient(135deg, rgba(29,161,242,0.85), rgba(0,119,181,0.85));
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      color: #fff;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-      z-index: 1000;
-      text-decoration: none;
-    }
-    .tg-banner img { width: 28px; height: 28px; margin-right: 10px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); display: block; }
-    .tg-banner span { font-size: 15px; font-weight: 600; letter-spacing: .4px; }
-
-    /* Chrome Only Modal */
-    #chromeModal .modal-content {
-      background: rgba(255, 0, 0, 0.1);
-      border: 1px solid rgba(255, 0, 0, 0.3);
-    }
-    #chromeModal h2 {
-      color: #f87171;
-    }
   </style>
 </head>
 
 <body>
-
-
-  <!-- Telegram Popup Modal -->
-  <div id="telegramModal" class="modal" aria-hidden="false" role="dialog" aria-modal="true">
-    <div class="modal-content" role="document" aria-labelledby="modalTitle" aria-describedby="modalDesc">
-      <h2 id="modalTitle">Join our Telegram</h2>
-      <p id="modalDesc">Stay updated with the latest <strong>Live Match Links</strong> and updates. Click below to join our official Telegram channel.</p>
-      <a id="joinLink" href="https://t.me/+e3-eAje291cxNGNl" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block">
-        <button id="joinButton" class="btn" type="button">Join Telegram</button>
-      </a>
-      <button id="closeButton" class="btn" type="button">Maybe Later</button>
-    </div>
-  </div>
 
   <!-- Chrome Only Modal -->
   <div id="chromeModal" class="modal hidden" role="dialog" aria-modal="true">
@@ -141,16 +100,17 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
+
       /********** Chrome check **********/
       const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
       if (!isChrome) {
         const chromeModal = document.getElementById('chromeModal');
         chromeModal.classList.remove('hidden');
         chromeModal.setAttribute('aria-hidden', 'false');
-        return; // block video setup in non-Chrome
+        return;
       }
 
-      /********** Your original Shaka player code **********/
+      /********** Shaka Player Setup **********/
       shaka.polyfill.installAll();
 
       if (!shaka.Player.isBrowserSupported()) {
@@ -185,6 +145,7 @@
             "7771cca923225ce08887cbae764e72c6": "67d80b71f02d2cd1e4e0ee7b9b752841 "
           }
         };
+
         let cookieHeader = "__hdnea__=st=1775352545~exp=1775438945~acl=/*~hmac=16c6fbc8d9761427cc1f923eb519816acc40e8b9003906fa6cc23ea4ed57e201";
         let streamUrl = "https://jiotvioslive.cdn.jio.com/bpk-tv/Ten2_HD_BTS/output/index.mpd";
 
@@ -247,28 +208,6 @@
           console.error('Load error:', error);
         }
       }
-
-      /********** Telegram modal logic **********/
-      const modal = document.getElementById('telegramModal');
-      const closeButton = document.getElementById('closeButton');
-      const joinLink = document.getElementById('joinLink');
-
-      function hideModal() {
-        if (!modal.classList.contains('hidden')) {
-          modal.classList.add('hidden');
-          modal.setAttribute('aria-hidden', 'true');
-        }
-      }
-
-      if (closeButton) {
-        closeButton.addEventListener('click', (e) => { e.preventDefault(); hideModal(); });
-      }
-      if (joinLink) {
-        joinLink.addEventListener('click', () => { hideModal(); });
-      }
-      modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
-      document.addEventListener('keydown', (e) => { if ((e.key === 'Escape' || e.key === 'Esc') && !modal.classList.contains('hidden')) hideModal(); });
-      setTimeout(() => { hideModal(); }, 10000);
 
     });
   </script>
