@@ -12,7 +12,6 @@
 
 <title>RAREXVAULT</title>
 
-
 <style>
 
 /* =========================================================
@@ -63,11 +62,15 @@ body {
         #050609;
 
     overflow-x: hidden;
+
+    transition:
+        background .4s ease,
+        color .4s ease;
 }
 
 
 /* =========================================================
-   BACKGROUND
+   BACKGROUND GRID
 ========================================================= */
 
 body::before {
@@ -125,7 +128,7 @@ body::after {
 
 
 /* =========================================================
-   INITIAL LOADING SCREEN
+   LOADING SCREEN
 ========================================================= */
 
 #loading-screen {
@@ -340,6 +343,8 @@ body::after {
 
     font-weight: 900;
 
+    letter-spacing: 1px;
+
     background:
         linear-gradient(
             135deg,
@@ -390,7 +395,13 @@ body::after {
 }
 
 
-.telegram-btn {
+/* =========================================================
+   DARK / LIGHT TOGGLE
+========================================================= */
+
+.theme-toggle {
+
+    position: relative;
 
     flex: 0 0 auto;
 
@@ -398,52 +409,88 @@ body::after {
 
     align-items: center;
 
+    justify-content: center;
+
     gap: 8px;
 
+    min-width: 84px;
+
     padding:
-        11px
-        16px;
-
-    color: #fff;
-
-    text-decoration: none;
+        10px
+        13px;
 
     border:
-        1px solid rgba(255,255,255,.08);
+        1px solid rgba(255,255,255,.09);
 
     border-radius: 13px;
 
+    color: #d4d4d8;
+
     background:
-        rgba(255,255,255,.04);
+        rgba(255,255,255,.045);
 
-    backdrop-filter: blur(15px);
+    backdrop-filter:
+        blur(15px);
 
-    font-size: 11px;
+    -webkit-backdrop-filter:
+        blur(15px);
 
-    font-weight: 800;
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
 
     transition:
         transform .25s ease,
         background .25s ease,
-        border-color .25s ease;
+        border-color .25s ease,
+        color .25s ease;
 }
 
 
-.telegram-btn:hover {
+.theme-toggle:hover {
 
-    transform: translateY(-2px);
-
-    background:
-        rgba(124,58,237,.15);
+    transform:
+        translateY(-2px);
 
     border-color:
-        rgba(124,58,237,.35);
+        rgba(139,92,246,.35);
+
+    background:
+        rgba(139,92,246,.12);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.2);
 }
 
 
-.telegram-icon {
+.theme-icon {
 
-    font-size: 16px;
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    transition:
+        transform .35s ease;
+}
+
+
+.theme-toggle:hover .theme-icon {
+
+    transform:
+        rotate(20deg)
+        scale(1.12);
 }
 
 
@@ -562,6 +609,11 @@ body::after {
     box-shadow:
         0 30px 90px rgba(0,0,0,.55),
         0 0 70px rgba(124,58,237,.08);
+
+    transition:
+        background .4s ease,
+        border-color .4s ease,
+        box-shadow .4s ease;
 }
 
 
@@ -587,6 +639,10 @@ body::after {
             rgba(255,255,255,.035),
             rgba(255,255,255,.01)
         );
+
+    transition:
+        background .4s ease,
+        border-color .4s ease;
 }
 
 
@@ -641,6 +697,9 @@ body::after {
     font-size: 12px;
 
     font-weight: 700;
+
+    transition:
+        color .4s ease;
 }
 
 
@@ -849,6 +908,10 @@ body::after {
 
     background:
         rgba(255,255,255,.018);
+
+    transition:
+        background .4s ease,
+        border-color .4s ease;
 }
 
 
@@ -891,6 +954,9 @@ body::after {
     color: #a1a1aa;
 
     font-size: 11px;
+
+    transition:
+        color .4s ease;
 }
 
 
@@ -935,17 +1001,20 @@ body::after {
     background:
         rgba(255,255,255,.025);
 
-    backdrop-filter: blur(15px);
+    backdrop-filter:
+        blur(15px);
 
     transition:
         transform .25s ease,
-        border-color .25s ease;
+        border-color .25s ease,
+        background .4s ease;
 }
 
 
 .info-card:hover {
 
-    transform: translateY(-3px);
+    transform:
+        translateY(-3px);
 
     border-color:
         rgba(124,58,237,.25);
@@ -967,6 +1036,9 @@ body::after {
     color: #e4e4e7;
 
     font-size: 12px;
+
+    transition:
+        color .4s ease;
 }
 
 
@@ -981,7 +1053,7 @@ body::after {
 
 
 /* =========================================================
-   SITE FOOTER
+   FOOTER
 ========================================================= */
 
 .site-footer {
@@ -995,12 +1067,18 @@ body::after {
     font-size: 9px;
 
     letter-spacing: 1.5px;
+
+    transition:
+        color .4s ease;
 }
 
 
 .site-footer strong {
 
     color: #71717a;
+
+    transition:
+        color .4s ease;
 }
 
 
@@ -1045,8 +1123,6 @@ body::after {
 }
 
 
-/* BACKDROP */
-
 .rxv-popup-backdrop {
 
     position: absolute;
@@ -1058,10 +1134,11 @@ body::after {
 
     backdrop-filter:
         blur(15px);
+
+    -webkit-backdrop-filter:
+        blur(15px);
 }
 
-
-/* POPUP CARD */
 
 .rxv-popup-card {
 
@@ -1118,8 +1195,6 @@ body::after {
 }
 
 
-/* POPUP GLOW */
-
 .rxv-popup-card::before {
 
     content: "";
@@ -1132,14 +1207,16 @@ body::after {
     top: -140px;
     left: 50%;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     border-radius: 50%;
 
     background:
         rgba(124,58,237,.35);
 
-    filter: blur(65px);
+    filter:
+        blur(65px);
 
     pointer-events: none;
 }
@@ -1285,8 +1362,6 @@ body::after {
 }
 
 
-/* POPUP DESCRIPTION */
-
 .rxv-popup-card p {
 
     position: relative;
@@ -1367,7 +1442,7 @@ body::after {
 }
 
 
-/* JOIN BUTTON */
+/* TELEGRAM BUTTON */
 
 .rxv-popup-join {
 
@@ -1458,8 +1533,6 @@ body::after {
 }
 
 
-/* POPUP BRAND */
-
 .rxv-popup-brand {
 
     position: relative;
@@ -1473,6 +1546,210 @@ body::after {
     font-weight: 800;
 
     letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+body.light-mode {
+
+    color: #18181b;
+
+    background:
+        radial-gradient(
+            circle at 15% 5%,
+            rgba(124,58,237,.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(14,165,233,.10),
+            transparent 28%
+        ),
+        #f4f4f7;
+}
+
+
+body.light-mode::before {
+
+    opacity: .35;
+
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.035) 1px,
+            transparent 1px
+        );
+}
+
+
+body.light-mode::after {
+
+    background:
+        rgba(124,58,237,.06);
+}
+
+
+/* HEADER */
+
+body.light-mode .brand-title {
+
+    color: #18181b;
+}
+
+
+body.light-mode .brand-subtitle {
+
+    color: #71717a;
+}
+
+
+/* THEME BUTTON */
+
+body.light-mode .theme-toggle {
+
+    color: #3f3f46;
+
+    border-color:
+        rgba(0,0,0,.09);
+
+    background:
+        rgba(255,255,255,.72);
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.04);
+}
+
+
+body.light-mode .theme-toggle:hover {
+
+    background:
+        rgba(124,58,237,.08);
+}
+
+
+/* HERO */
+
+body.light-mode .hero-eyebrow {
+
+    color: #52525b;
+}
+
+
+body.light-mode .hero h1 {
+
+    background:
+        linear-gradient(
+            100deg,
+            #18181b,
+            #6d28d9,
+            #0369a1
+        );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+body.light-mode .hero p {
+
+    color: #71717a;
+}
+
+
+/* PLAYER */
+
+body.light-mode .player-shell {
+
+    border-color:
+        rgba(0,0,0,.08);
+
+    background: #fff;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.12);
+}
+
+
+body.light-mode .player-header {
+
+    border-color:
+        rgba(0,0,0,.07);
+
+    background:
+        rgba(0,0,0,.025);
+}
+
+
+body.light-mode #streamLabel {
+
+    color: #3f3f46;
+}
+
+
+body.light-mode .player-footer {
+
+    border-color:
+        rgba(0,0,0,.07);
+
+    background:
+        rgba(0,0,0,.018);
+}
+
+
+body.light-mode #streamLabelFooter {
+
+    color: #52525b;
+}
+
+
+body.light-mode .format-label {
+
+    color: #71717a;
+}
+
+
+/* INFO CARDS */
+
+body.light-mode .info-card {
+
+    border-color:
+        rgba(0,0,0,.07);
+
+    background:
+        rgba(255,255,255,.75);
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.04);
+}
+
+
+body.light-mode .info-card h3 {
+
+    color: #27272a;
+}
+
+
+/* FOOTER */
+
+body.light-mode .site-footer {
+
+    color: #a1a1aa;
+}
+
+
+body.light-mode .site-footer strong {
+
+    color: #52525b;
 }
 
 
@@ -1599,7 +1876,7 @@ body::after {
 
     .brand-title {
 
-        max-width: 160px;
+        max-width: 170px;
 
         font-size: 14px;
     }
@@ -1613,17 +1890,26 @@ body::after {
     }
 
 
-    .telegram-btn {
+    .theme-toggle {
 
-        padding:
-            9px
-            11px;
+        min-width: 45px;
 
-        font-size: 0;
+        width: 45px;
+        height: 40px;
+
+        padding: 0;
+
+        gap: 0;
     }
 
 
-    .telegram-icon {
+    .theme-text {
+
+        display: none;
+    }
+
+
+    .theme-icon {
 
         font-size: 17px;
     }
@@ -1767,6 +2053,12 @@ body::after {
         font-size: 24px;
     }
 
+
+    .brand-title {
+
+        max-width: 140px;
+    }
+
 }
 
 </style>
@@ -1778,7 +2070,7 @@ body::after {
 
 
 <!-- =======================================================
-     INITIAL LOADING SCREEN
+     LOADING SCREEN
 ======================================================= -->
 
 <div id="loading-screen">
@@ -1804,7 +2096,6 @@ body::after {
 </div>
 
 
-
 <!-- =======================================================
      MAIN CONTENT
 ======================================================= -->
@@ -1812,7 +2103,9 @@ body::after {
 <main id="main-content">
 
 
-    <!-- HEADER -->
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
     <header class="topbar">
 
@@ -1837,28 +2130,37 @@ body::after {
         </div>
 
 
-        <a
-            class="telegram-btn"
-            href="https://t.me/+tirUqNl9KsswNTI1"
-            target="_blank"
-            rel="noopener noreferrer"
+        <!-- DARK / LIGHT MODE -->
+
+        <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle theme"
+            title="Toggle theme"
         >
 
-            <span class="telegram-icon">
-                ✈
+            <span
+                class="theme-icon"
+                id="themeIcon"
+            >
+                ☾
             </span>
 
-            <span>
-                JOIN CHANNEL
+            <span
+                class="theme-text"
+                id="themeText"
+            >
+                DARK
             </span>
 
-        </a>
+        </button>
 
     </header>
 
 
-
-    <!-- HERO -->
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
     <section class="hero">
 
@@ -1885,13 +2187,12 @@ body::after {
     </section>
 
 
-
-    <!-- PLAYER -->
+    <!-- =====================================================
+         PLAYER
+    ====================================================== -->
 
     <section class="player-shell">
 
-
-        <!-- PLAYER HEADER -->
 
         <div class="player-header">
 
@@ -1909,9 +2210,6 @@ body::after {
 
         </div>
 
-
-
-        <!-- PLAYER -->
 
         <div
             class="player-container"
@@ -1969,9 +2267,7 @@ body::after {
 
             </div>
 
-
         </div>
-
 
 
         <!-- PLAYER FOOTER -->
@@ -1998,8 +2294,9 @@ body::after {
     </section>
 
 
-
-    <!-- INFO CARDS -->
+    <!-- =====================================================
+         INFO CARDS
+    ====================================================== -->
 
     <section class="info-grid">
 
@@ -2061,7 +2358,6 @@ body::after {
     </section>
 
 
-
     <!-- FOOTER -->
 
     <footer class="site-footer">
@@ -2073,7 +2369,6 @@ body::after {
 
 
 </main>
-
 
 
 <!-- =======================================================
@@ -2089,8 +2384,6 @@ body::after {
     <div class="rxv-popup-card">
 
 
-        <!-- CLOSE -->
-
         <button
             class="rxv-popup-close"
             id="rxvPopupClose"
@@ -2100,28 +2393,20 @@ body::after {
         </button>
 
 
-        <!-- RXV LOGO -->
-
         <div class="rxv-popup-logo">
             RXV
         </div>
 
-
-        <!-- BADGE -->
 
         <div class="rxv-popup-badge">
             ✦ RXV COMMUNITY
         </div>
 
 
-        <!-- TITLE -->
-
         <h2>
             Join Our Channels
         </h2>
 
-
-        <!-- DESCRIPTION -->
 
         <p>
             For
@@ -2130,8 +2415,6 @@ body::after {
             <strong>Premium Contents</strong>
         </p>
 
-
-        <!-- FEATURES -->
 
         <div class="rxv-popup-features">
 
@@ -2178,15 +2461,10 @@ body::after {
         </div>
 
 
-        <!-- TELEGRAM BUTTON -->
-
         <a
             href="https://t.me/+tirUqNl9KsswNTI1"
-
             target="_blank"
-
             rel="noopener noreferrer"
-
             class="rxv-popup-join"
         >
 
@@ -2203,8 +2481,6 @@ body::after {
         </a>
 
 
-        <!-- BRAND -->
-
         <div class="rxv-popup-brand">
             RXV • RAREXVAULT
         </div>
@@ -2215,16 +2491,140 @@ body::after {
 </div>
 
 
-
 <script>
 
 /* =========================================================
-   RAREXVAULT
-   MAIN APPLICATION
-
-   iframeSrc in your JSON contains PLAYER PAGE URLs,
-   so the outer page intentionally uses an iframe.
+   RAREXVAULT APPLICATION
 ========================================================= */
+
+
+/* =========================================================
+   DARK / LIGHT MODE
+========================================================= */
+
+const themeToggle =
+    document.getElementById(
+        'themeToggle'
+    );
+
+const themeIcon =
+    document.getElementById(
+        'themeIcon'
+    );
+
+const themeText =
+    document.getElementById(
+        'themeText'
+    );
+
+
+function updateThemeUI() {
+
+    const isLight =
+        document.body.classList.contains(
+            'light-mode'
+        );
+
+
+    if (isLight) {
+
+        themeIcon.textContent =
+            '☀';
+
+        themeText.textContent =
+            'LIGHT';
+
+    } else {
+
+        themeIcon.textContent =
+            '☾';
+
+        themeText.textContent =
+            'DARK';
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD SAVED THEME
+========================================================= */
+
+try {
+
+    const savedTheme =
+        localStorage.getItem(
+            'rxv-theme'
+        );
+
+
+    if (savedTheme === 'light') {
+
+        document.body.classList.add(
+            'light-mode'
+        );
+
+    }
+
+} catch (error) {
+
+    console.warn(
+        'Theme storage unavailable'
+    );
+
+}
+
+
+updateThemeUI();
+
+
+/* =========================================================
+   TOGGLE THEME
+========================================================= */
+
+if (themeToggle) {
+
+    themeToggle.addEventListener(
+        'click',
+        () => {
+
+
+            document.body.classList.toggle(
+                'light-mode'
+            );
+
+
+            const isLight =
+                document.body.classList.contains(
+                    'light-mode'
+                );
+
+
+            try {
+
+                localStorage.setItem(
+                    'rxv-theme',
+                    isLight
+                        ? 'light'
+                        : 'dark'
+                );
+
+            } catch (error) {
+
+                console.warn(
+                    'Unable to save theme'
+                );
+
+            }
+
+
+            updateThemeUI();
+
+        }
+    );
+
+}
 
 
 /* =========================================================
@@ -2324,7 +2724,7 @@ async function initializeApp() {
 
 
         /* =================================================
-           VALIDATE URL
+           CHECK PLAYER URL
         ================================================= */
 
         if (!streamData.iframeSrc) {
@@ -2403,37 +2803,41 @@ async function initializeApp() {
 
 
         /* =================================================
-           REMOVE INITIAL LOADING SCREEN
+           HIDE INITIAL LOADING
         ================================================= */
 
         setTimeout(() => {
 
 
-            loadingScreen.style.opacity =
-                '0';
+            if (loadingScreen) {
+
+                loadingScreen.style.opacity =
+                    '0';
+
+                loadingScreen.style.visibility =
+                    'hidden';
+
+            }
 
 
-            loadingScreen.style.visibility =
-                'hidden';
+            if (mainContent) {
 
+                mainContent.style.opacity =
+                    '1';
 
-            mainContent.style.opacity =
-                '1';
+                mainContent.style.visibility =
+                    'visible';
 
-
-            mainContent.style.visibility =
-                'visible';
+            }
 
 
             setTimeout(() => {
-
 
                 if (loadingScreen) {
 
                     loadingScreen.remove();
 
                 }
-
 
             }, 600);
 
@@ -2446,7 +2850,7 @@ async function initializeApp() {
 
 
 /* =========================================================
-   LOAD IFRAME
+   LOAD IFRAME PLAYER
 ========================================================= */
 
 function loadIframe(
@@ -2478,6 +2882,11 @@ function loadIframe(
         );
 
 
+    if (!iframe) {
+        return;
+    }
+
+
     /* RESET */
 
     errorScreen.style.display =
@@ -2501,16 +2910,11 @@ function loadIframe(
 
 
     /* =====================================================
-       IFRAME LOAD EVENT
+       PLAYER LOAD
     ===================================================== */
 
     iframe.onload =
         function() {
-
-
-            console.log(
-                'RAREXVAULT PLAYER LOADED'
-            );
 
 
             playerStatus.textContent =
@@ -2538,17 +2942,11 @@ function loadIframe(
 
 
     /* =====================================================
-       IFRAME ERROR
+       PLAYER ERROR
     ===================================================== */
 
     iframe.onerror =
         function() {
-
-
-            console.error(
-                'RAREXVAULT IFRAME ERROR'
-            );
-
 
             renderErrorUI(
                 'Unable to load player'
@@ -2558,7 +2956,7 @@ function loadIframe(
 
 
     /* =====================================================
-       SET PLAYER URL
+       LOAD URL
     ===================================================== */
 
     iframe.src =
@@ -2594,44 +2992,76 @@ function renderErrorUI(
         );
 
 
-    loading.style.display =
-        'none';
+    if (loading) {
 
-
-    iframe.style.display =
-        'none';
-
-
-    errorScreen.style.display =
-        'flex';
-
-
-    document.getElementById(
-        'streamLabel'
-    ).textContent =
-        'STREAM UNAVAILABLE';
-
-
-    document.getElementById(
-        'streamLabelFooter'
-    ).textContent =
-        'STREAM UNAVAILABLE';
-
-
-    document.getElementById(
-        'heroTitle'
-    ).textContent =
-        'Stream Unavailable';
-
-
-    if (message) {
-
-        console.error(
-            'RAREXVAULT:',
-            message
-        );
+        loading.style.display =
+            'none';
 
     }
+
+
+    if (iframe) {
+
+        iframe.style.display =
+            'none';
+
+    }
+
+
+    if (errorScreen) {
+
+        errorScreen.style.display =
+            'flex';
+
+    }
+
+
+    const streamLabel =
+        document.getElementById(
+            'streamLabel'
+        );
+
+
+    const footerLabel =
+        document.getElementById(
+            'streamLabelFooter'
+        );
+
+
+    const heroTitle =
+        document.getElementById(
+            'heroTitle'
+        );
+
+
+    if (streamLabel) {
+
+        streamLabel.textContent =
+            'STREAM UNAVAILABLE';
+
+    }
+
+
+    if (footerLabel) {
+
+        footerLabel.textContent =
+            'STREAM UNAVAILABLE';
+
+    }
+
+
+    if (heroTitle) {
+
+        heroTitle.textContent =
+            'Stream Unavailable';
+
+    }
+
+
+    console.error(
+        'RAREXVAULT:',
+        message || 'Unknown error'
+    );
 
 }
 
@@ -2653,7 +3083,7 @@ const rxvPopupClose =
 
 
 /* =========================================================
-   SHOW POPUP
+   SHOW POPUP AFTER 1.8 SECONDS
 ========================================================= */
 
 setTimeout(() => {
@@ -2672,7 +3102,7 @@ setTimeout(() => {
 
 
 /* =========================================================
-   CLOSE BUTTON
+   CLOSE POPUP
 ========================================================= */
 
 if (rxvPopupClose) {
@@ -2692,7 +3122,7 @@ if (rxvPopupClose) {
 
 
 /* =========================================================
-   CLICK BACKDROP TO CLOSE
+   CLOSE WHEN CLICKING BACKDROP
 ========================================================= */
 
 if (rxvPopup) {
@@ -2721,7 +3151,7 @@ if (rxvPopup) {
 
 
 /* =========================================================
-   START APPLICATION
+   START
 ========================================================= */
 
 document.addEventListener(
@@ -2730,7 +3160,6 @@ document.addEventListener(
 );
 
 </script>
-
 
 </body>
 
