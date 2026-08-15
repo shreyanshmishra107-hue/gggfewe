@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="referrer" content="no-referrer">
+
 <meta name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=1">
 
 <title>RAREXVAULT</title>
-
-<!-- Shaka Player -->
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css"
-      crossorigin="anonymous">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js"
-        crossorigin="anonymous"></script>
 
 <style>
 
@@ -46,32 +41,32 @@ body {
         Arial,
         sans-serif;
 
+    color: #fff;
+
     background:
         radial-gradient(
-            circle at 20% 10%,
-            rgba(91, 33, 182, .22),
+            circle at 15% 10%,
+            rgba(124,58,237,.20),
             transparent 30%
         ),
         radial-gradient(
             circle at 85% 15%,
-            rgba(14, 165, 233, .16),
+            rgba(14,165,233,.14),
             transparent 30%
         ),
         radial-gradient(
             circle at 50% 100%,
-            rgba(124, 58, 237, .14),
+            rgba(124,58,237,.12),
             transparent 35%
         ),
         #050609;
-
-    color: #fff;
 
     overflow-x: hidden;
 }
 
 
 /* =========================================================
-   BACKGROUND
+   BACKGROUND GRID
 ========================================================= */
 
 body::before {
@@ -95,18 +90,22 @@ body::before {
             transparent 1px
         );
 
-    background-size: 40px 40px;
+    background-size: 42px 42px;
 
     mask-image:
         linear-gradient(
             to bottom,
             black,
-            transparent
+            transparent 85%
         );
 
     z-index: -2;
 }
 
+
+/* =========================================================
+   GLOW
+========================================================= */
 
 body::after {
 
@@ -118,13 +117,14 @@ body::after {
     height: 500px;
 
     left: -250px;
-    top: 35%;
-
-    background: rgba(124,58,237,.12);
-
-    filter: blur(120px);
+    top: 40%;
 
     border-radius: 50%;
+
+    background:
+        rgba(124,58,237,.10);
+
+    filter: blur(120px);
 
     pointer-events: none;
 
@@ -142,7 +142,7 @@ body::after {
 
     inset: 0;
 
-    z-index: 9999;
+    z-index: 99999;
 
     display: flex;
 
@@ -173,22 +173,21 @@ body::after {
 
 .loader-logo {
 
-    width: 74px;
-    height: 74px;
+    width: 78px;
+    height: 78px;
 
     margin: auto;
-
-    border-radius: 22px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    font-size: 30px;
-    font-weight: 900;
+    border-radius: 23px;
 
-    color: white;
+    font-size: 31px;
+
+    font-weight: 900;
 
     background:
         linear-gradient(
@@ -198,8 +197,8 @@ body::after {
         );
 
     box-shadow:
-        0 0 50px rgba(124,58,237,.45),
-        inset 0 0 20px rgba(255,255,255,.12);
+        0 0 60px rgba(124,58,237,.45),
+        inset 0 0 20px rgba(255,255,255,.10);
 
     animation:
         logoPulse 2s ease-in-out infinite;
@@ -212,7 +211,7 @@ body::after {
 
     font-size: 20px;
 
-    font-weight: 800;
+    font-weight: 900;
 
     letter-spacing: 4px;
 }
@@ -224,9 +223,11 @@ body::after {
 
     color: #71717a;
 
-    font-size: 12px;
+    font-size: 10px;
 
     letter-spacing: 2px;
+
+    text-transform: uppercase;
 }
 
 
@@ -256,14 +257,14 @@ body::after {
 
     height: 100%;
 
+    border-radius: inherit;
+
     background:
         linear-gradient(
             90deg,
             #7c3aed,
             #38bdf8
         );
-
-    border-radius: inherit;
 
     animation:
         loadingBar 1.2s ease-in-out infinite;
@@ -305,7 +306,7 @@ body::after {
 
     width: 100%;
 
-    height: 74px;
+    min-height: 70px;
 
     display: flex;
 
@@ -313,8 +314,9 @@ body::after {
 
     justify-content: space-between;
 
-    padding: 0 4px 18px;
+    gap: 15px;
 
+    padding-bottom: 15px;
 }
 
 
@@ -325,24 +327,28 @@ body::after {
     align-items: center;
 
     gap: 13px;
+
+    min-width: 0;
 }
 
 
 .brand-icon {
 
-    width: 44px;
-    height: 44px;
+    width: 45px;
+    height: 45px;
 
-    border-radius: 13px;
+    flex: 0 0 auto;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    font-weight: 900;
+    border-radius: 14px;
 
     font-size: 18px;
+
+    font-weight: 900;
 
     background:
         linear-gradient(
@@ -352,7 +358,7 @@ body::after {
         );
 
     box-shadow:
-        0 8px 35px rgba(124,58,237,.25);
+        0 10px 35px rgba(124,58,237,.25);
 }
 
 
@@ -362,25 +368,27 @@ body::after {
 
     flex-direction: column;
 
-    gap: 2px;
+    gap: 3px;
+
+    min-width: 0;
 }
 
 
 .brand-title {
 
-    font-size: 18px;
-
-    font-weight: 900;
-
-    letter-spacing: 1.5px;
-
-    max-width: 600px;
+    max-width: 650px;
 
     overflow: hidden;
 
     white-space: nowrap;
 
     text-overflow: ellipsis;
+
+    font-size: 18px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
 }
 
 
@@ -388,7 +396,7 @@ body::after {
 
     color: #71717a;
 
-    font-size: 10px;
+    font-size: 9px;
 
     letter-spacing: 2px;
 
@@ -398,9 +406,7 @@ body::after {
 
 .telegram-btn {
 
-    text-decoration: none;
-
-    color: white;
+    flex: 0 0 auto;
 
     display: flex;
 
@@ -408,15 +414,24 @@ body::after {
 
     gap: 9px;
 
-    padding: 11px 17px;
+    padding:
+        11px
+        17px;
+
+    color: #fff;
+
+    text-decoration: none;
 
     border-radius: 13px;
 
-    font-size: 12px;
+    font-size: 11px;
 
-    font-weight: 700;
+    font-weight: 800;
 
-    border: 1px solid rgba(255,255,255,.09);
+    letter-spacing: .3px;
+
+    border:
+        1px solid rgba(255,255,255,.09);
 
     background:
         rgba(255,255,255,.045);
@@ -435,10 +450,10 @@ body::after {
     transform: translateY(-2px);
 
     background:
-        rgba(124,58,237,.16);
+        rgba(124,58,237,.15);
 
     border-color:
-        rgba(124,58,237,.4);
+        rgba(124,58,237,.35);
 }
 
 
@@ -454,9 +469,9 @@ body::after {
 
 .hero {
 
-    margin-top: 10px;
+    margin-top: 18px;
 
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 
@@ -468,13 +483,13 @@ body::after {
 
     gap: 9px;
 
-    margin-bottom: 8px;
+    margin-bottom: 9px;
 
     color: #a1a1aa;
 
-    font-size: 11px;
+    font-size: 10px;
 
-    font-weight: 700;
+    font-weight: 800;
 
     letter-spacing: 2px;
 
@@ -492,7 +507,7 @@ body::after {
     background: #ef4444;
 
     box-shadow:
-        0 0 0 5px rgba(239,68,68,.08),
+        0 0 0 5px rgba(239,68,68,.07),
         0 0 18px rgba(239,68,68,.7);
 
     animation:
@@ -502,24 +517,27 @@ body::after {
 
 .hero h1 {
 
+    max-width: 900px;
+
     font-size:
-        clamp(25px, 4vw, 44px);
+        clamp(27px, 4vw, 46px);
 
     line-height: 1.05;
 
     font-weight: 900;
 
-    letter-spacing: -1.5px;
+    letter-spacing: -1.7px;
 
     background:
         linear-gradient(
             100deg,
-            #ffffff 15%,
+            #fff 15%,
             #c4b5fd 55%,
             #7dd3fc
         );
 
     -webkit-background-clip: text;
+
     background-clip: text;
 
     color: transparent;
@@ -528,9 +546,9 @@ body::after {
 
 .hero p {
 
-    margin-top: 10px;
-
     max-width: 680px;
+
+    margin-top: 12px;
 
     color: #71717a;
 
@@ -541,23 +559,21 @@ body::after {
 
 
 /* =========================================================
-   PLAYER CARD
+   PLAYER
 ========================================================= */
 
 .player-shell {
-
-    position: relative;
 
     width: 100%;
 
     overflow: hidden;
 
+    border:
+        1px solid rgba(255,255,255,.08);
+
     border-radius: 24px;
 
     background: #08090d;
-
-    border:
-        1px solid rgba(255,255,255,.08);
 
     box-shadow:
         0 30px 90px rgba(0,0,0,.55),
@@ -575,7 +591,8 @@ body::after {
 
     justify-content: space-between;
 
-    padding: 0 17px;
+    padding:
+        0 17px;
 
     border-bottom:
         1px solid rgba(255,255,255,.06);
@@ -591,41 +608,46 @@ body::after {
 
 .player-name {
 
+    min-width: 0;
+
     display: flex;
 
     align-items: center;
 
     gap: 9px;
-
-    min-width: 0;
 }
 
 
 .player-name span {
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    color: #d4d4d8;
 
     overflow: hidden;
 
     white-space: nowrap;
 
     text-overflow: ellipsis;
+
+    color: #d4d4d8;
+
+    font-size: 12px;
+
+    font-weight: 700;
 }
 
 
 .player-live {
 
-    padding: 5px 8px;
+    flex: 0 0 auto;
+
+    padding:
+        5px
+        8px;
 
     border-radius: 6px;
 
     color: #fecaca;
 
-    background: rgba(239,68,68,.12);
+    background:
+        rgba(239,68,68,.12);
 
     border:
         1px solid rgba(239,68,68,.18);
@@ -637,6 +659,10 @@ body::after {
     letter-spacing: 1px;
 }
 
+
+/* =========================================================
+   PLAYER DISPLAY
+========================================================= */
 
 .player-display {
 
@@ -652,7 +678,7 @@ body::after {
         radial-gradient(
             circle at center,
             #151620,
-            #050609 70%
+            #050609 72%
         );
 }
 
@@ -666,13 +692,17 @@ body::after {
     width: 100%;
     height: 100%;
 
-    border: 0;
-
     display: none;
+
+    border: 0;
 
     background: #000;
 }
 
+
+/* =========================================================
+   LOADING INSIDE PLAYER
+========================================================= */
 
 .portal-loading {
 
@@ -694,12 +724,13 @@ body::after {
 
 .portal-spinner {
 
-    width: 44px;
-    height: 44px;
+    width: 45px;
+    height: 45px;
 
     border-radius: 50%;
 
-    border: 3px solid rgba(255,255,255,.08);
+    border:
+        3px solid rgba(255,255,255,.07);
 
     border-top-color: #8b5cf6;
 
@@ -714,9 +745,11 @@ body::after {
 
     color: #71717a;
 
-    font-size: 11px;
+    font-size: 10px;
 
-    letter-spacing: 1.5px;
+    font-weight: 700;
+
+    letter-spacing: 1.7px;
 }
 
 
@@ -736,7 +769,8 @@ body::after {
 
     gap: 15px;
 
-    padding: 12px 17px;
+    padding:
+        12px 17px;
 
     border-top:
         1px solid rgba(255,255,255,.055);
@@ -748,13 +782,13 @@ body::after {
 
 .stream-info {
 
+    min-width: 0;
+
     display: flex;
 
     align-items: center;
 
     gap: 10px;
-
-    min-width: 0;
 }
 
 
@@ -774,34 +808,34 @@ body::after {
 }
 
 
-#streamLabel {
-
-    font-size: 12px;
-
-    color: #a1a1aa;
+#streamLabelFooter {
 
     overflow: hidden;
 
     white-space: nowrap;
 
     text-overflow: ellipsis;
+
+    color: #a1a1aa;
+
+    font-size: 11px;
 }
 
 
 .secure-label {
 
+    flex: 0 0 auto;
+
     color: #52525b;
 
-    font-size: 10px;
+    font-size: 9px;
 
     letter-spacing: 1px;
-
-    white-space: nowrap;
 }
 
 
 /* =========================================================
-   BELOW PLAYER
+   INFO CARDS
 ========================================================= */
 
 .info-grid {
@@ -821,10 +855,10 @@ body::after {
 
     padding: 18px;
 
-    border-radius: 17px;
-
     border:
         1px solid rgba(255,255,255,.06);
+
+    border-radius: 17px;
 
     background:
         rgba(255,255,255,.025);
@@ -842,35 +876,35 @@ body::after {
     transform: translateY(-3px);
 
     border-color:
-        rgba(124,58,237,.22);
+        rgba(124,58,237,.25);
 }
 
 
 .info-icon {
 
-    font-size: 19px;
-
     margin-bottom: 10px;
+
+    font-size: 19px;
 }
 
 
 .info-card h3 {
 
-    font-size: 12px;
+    margin-bottom: 5px;
 
     color: #e4e4e7;
 
-    margin-bottom: 5px;
+    font-size: 12px;
 }
 
 
 .info-card p {
 
-    font-size: 10px;
-
     color: #71717a;
 
-    line-height: 1.5;
+    font-size: 10px;
+
+    line-height: 1.6;
 }
 
 
@@ -903,16 +937,18 @@ body::after {
     width: 64px;
     height: 64px;
 
-    border-radius: 20px;
-
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    font-size: 25px;
-
     margin-bottom: 17px;
+
+    border-radius: 20px;
+
+    color: #fca5a5;
+
+    font-size: 25px;
 
     background:
         rgba(239,68,68,.09);
@@ -924,19 +960,19 @@ body::after {
 
 .error-message h2 {
 
-    font-size: 19px;
-
     margin-bottom: 8px;
+
+    font-size: 19px;
 }
 
 
 .error-message p {
 
+    max-width: 360px;
+
     color: #71717a;
 
     font-size: 12px;
-
-    max-width: 350px;
 
     line-height: 1.6;
 }
@@ -954,9 +990,9 @@ body::after {
 
     color: #3f3f46;
 
-    font-size: 10px;
+    font-size: 9px;
 
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
 }
 
 
@@ -980,7 +1016,8 @@ body::after {
 
 @keyframes livePulse {
 
-    0%, 100% {
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
@@ -994,14 +1031,17 @@ body::after {
 
 @keyframes logoPulse {
 
-    0%, 100% {
+    0%,
+    100% {
         transform: scale(1);
+
         box-shadow:
             0 0 50px rgba(124,58,237,.35);
     }
 
     50% {
         transform: scale(1.04);
+
         box-shadow:
             0 0 70px rgba(124,58,237,.55);
     }
@@ -1051,9 +1091,9 @@ body::after {
 
     .topbar {
 
-        height: 65px;
+        min-height: 62px;
 
-        padding-bottom: 10px;
+        padding-bottom: 8px;
     }
 
 
@@ -1078,14 +1118,17 @@ body::after {
 
     .brand-subtitle {
 
-        font-size: 8px;
+        font-size: 7px;
+
+        letter-spacing: 1.5px;
     }
 
 
     .telegram-btn {
 
         padding:
-            9px 11px;
+            9px
+            11px;
 
         font-size: 0;
     }
@@ -1099,7 +1142,7 @@ body::after {
 
     .hero {
 
-        margin-top: 8px;
+        margin-top: 12px;
     }
 
 
@@ -1125,13 +1168,14 @@ body::after {
 
         height: 48px;
 
-        padding: 0 12px;
+        padding:
+            0 12px;
     }
 
 
     .player-display {
 
-        min-height: 210px;
+        min-height: 205px;
 
         aspect-ratio: 16 / 9;
     }
@@ -1166,15 +1210,16 @@ body::after {
 
 
 /* =========================================================
-   SMALL MOBILE
+   SMALL PHONES
 ========================================================= */
 
 @media (max-width: 380px) {
 
     .player-display {
 
-        min-height: 190px;
+        min-height: 185px;
     }
+
 
     .hero h1 {
 
@@ -1207,7 +1252,7 @@ body::after {
         </div>
 
         <div class="loader-subtitle">
-            INITIALIZING STREAM
+            Initializing Stream
         </div>
 
         <div class="loader-bar"></div>
@@ -1292,7 +1337,7 @@ body::after {
         <p>
             Welcome to RAREXVAULT. Enjoy a clean,
             fast and immersive viewing experience
-            powered by our streaming portal.
+            through our streaming portal.
         </p>
 
     </section>
@@ -1324,7 +1369,7 @@ body::after {
 
 
 
-        <!-- PLAYER -->
+        <!-- PLAYER DISPLAY -->
 
         <div
             class="player-display"
@@ -1350,6 +1395,7 @@ body::after {
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowfullscreen
                 referrerpolicy="no-referrer"
+                scrolling="no"
             ></iframe>
 
         </div>
@@ -1397,8 +1443,8 @@ body::after {
             </h3>
 
             <p>
-                Optimized player interface designed
-                for a smooth viewing experience.
+                Optimized for a smooth and responsive
+                viewing experience.
             </p>
 
         </div>
@@ -1416,7 +1462,7 @@ body::after {
 
             <p>
                 Stream information is automatically
-                loaded from the RAREXVAULT stream system.
+                loaded from the RAREXVAULT system.
             </p>
 
         </div>
@@ -1429,11 +1475,11 @@ body::after {
             </div>
 
             <h3>
-                Premium UI
+                Premium Interface
             </h3>
 
             <p>
-                A clean cinematic interface built
+                A cinematic dark interface designed
                 specifically for RAREXVAULT.
             </p>
 
@@ -1461,22 +1507,27 @@ body::after {
 <script>
 
 /* =========================================================
-   RAREXVAULT APPLICATION
+   RAREXVAULT APP
+   NO SHAKA PLAYER
 ========================================================= */
 
 async function initializeApp() {
 
     const loadingScreen =
-        document.getElementById('loading-screen');
+        document.getElementById(
+            'loading-screen'
+        );
 
     const mainContent =
-        document.getElementById('main-content');
+        document.getElementById(
+            'main-content'
+        );
 
 
     try {
 
         /* =================================================
-           FETCH STREAM JSON
+           FETCH JSON
         ================================================= */
 
         const response = await fetch(
@@ -1501,7 +1552,7 @@ async function initializeApp() {
 
 
         /* =================================================
-           GET URL ID
+           GET ID
         ================================================= */
 
         const urlParams =
@@ -1536,7 +1587,7 @@ async function initializeApp() {
 
 
         /* =================================================
-           UPDATE TITLE
+           PAGE TITLE
         ================================================= */
 
         const streamName =
@@ -1545,14 +1596,17 @@ async function initializeApp() {
 
 
         document.title =
-            streamName + ' • RAREXVAULT';
+            streamName +
+            ' • RAREXVAULT';
 
 
         /* =================================================
-           LOAD PLAYER
+           LOAD STREAM
         ================================================= */
 
-        renderIframeUI(streamData);
+        renderIframeUI(
+            streamData
+        );
 
 
     } catch (error) {
@@ -1566,7 +1620,6 @@ async function initializeApp() {
         renderErrorUI();
 
     } finally {
-
 
         /* =================================================
            HIDE LOADING SCREEN
@@ -1590,10 +1643,11 @@ async function initializeApp() {
 
             setTimeout(() => {
 
-                loadingScreen.remove();
+                if (loadingScreen) {
+                    loadingScreen.remove();
+                }
 
             }, 600);
-
 
         }, 500);
 
@@ -1608,16 +1662,15 @@ async function initializeApp() {
 
 function renderIframeUI(streamData) {
 
-
     const videoPlayer =
         document.getElementById(
             'videoPlayer'
         );
 
 
-    const statusText =
+    const portalLoading =
         document.getElementById(
-            'portalStatusText'
+            'portalLoading'
         );
 
 
@@ -1630,12 +1683,6 @@ function renderIframeUI(streamData) {
     const footerLabel =
         document.getElementById(
             'streamLabelFooter'
-        );
-
-
-    const portalLoading =
-        document.getElementById(
-            'portalLoading'
         );
 
 
@@ -1667,7 +1714,7 @@ function renderIframeUI(streamData) {
 
 
     /* =====================================================
-       CHECK IFRAME
+       CHECK IFRAME URL
     ===================================================== */
 
     if (!streamData.iframeSrc) {
@@ -1696,7 +1743,7 @@ function renderIframeUI(streamData) {
 
 
     /* =====================================================
-       BRAND
+       UPDATE BRAND
     ===================================================== */
 
     const brandTitle =
@@ -1714,20 +1761,19 @@ function renderIframeUI(streamData) {
 
 
     /* =====================================================
-       IFRAME LOAD ERROR HANDLING
+       IFRAME LOAD EVENT
     ===================================================== */
 
     videoPlayer.addEventListener(
         'load',
-        () => {
+        function() {
 
             console.log(
-                'RAREXVAULT stream loaded'
+                'RAREXVAULT iframe loaded'
             );
 
         }
     );
-
 
 }
 
@@ -1737,7 +1783,6 @@ function renderIframeUI(streamData) {
 ========================================================= */
 
 function renderErrorUI() {
-
 
     document.title =
         'Stream Not Found • RAREXVAULT';
@@ -1783,7 +1828,7 @@ function renderErrorUI() {
 
             <p>
                 The requested stream ID is invalid,
-                unavailable or currently offline.
+                unavailable, or currently offline.
             </p>
 
         </div>
@@ -1794,7 +1839,7 @@ function renderErrorUI() {
 
 
 /* =========================================================
-   START
+   START APP
 ========================================================= */
 
 document.addEventListener(
@@ -1804,6 +1849,6 @@ document.addEventListener(
 
 </script>
 
-
 </body>
+
 </html>
