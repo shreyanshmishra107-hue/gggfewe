@@ -42,7 +42,7 @@ body {
         Arial,
         sans-serif;
 
-    color: #ffffff;
+    color: #fff;
 
     background:
         radial-gradient(
@@ -67,7 +67,7 @@ body {
 
 
 /* =========================================================
-   BACKGROUND GRID
+   BACKGROUND
 ========================================================= */
 
 body::before {
@@ -93,20 +93,11 @@ body::before {
 
     background-size: 42px 42px;
 
-    mask-image:
-        linear-gradient(
-            to bottom,
-            black,
-            transparent 90%
-        );
+    opacity: .7;
 
     z-index: -2;
 }
 
-
-/* =========================================================
-   BACKGROUND GLOW
-========================================================= */
 
 body::after {
 
@@ -134,7 +125,7 @@ body::after {
 
 
 /* =========================================================
-   LOADING SCREEN
+   INITIAL LOADING SCREEN
 ========================================================= */
 
 #loading-screen {
@@ -189,6 +180,8 @@ body::after {
     font-size: 31px;
 
     font-weight: 900;
+
+    letter-spacing: 2px;
 
     background:
         linear-gradient(
@@ -411,7 +404,7 @@ body::after {
         11px
         16px;
 
-    color: #ffffff;
+    color: #fff;
 
     text-decoration: none;
 
@@ -522,7 +515,7 @@ body::after {
     background:
         linear-gradient(
             100deg,
-            #ffffff 15%,
+            #fff 15%,
             #c4b5fd 55%,
             #7dd3fc
         );
@@ -571,10 +564,6 @@ body::after {
         0 0 70px rgba(124,58,237,.08);
 }
 
-
-/* =========================================================
-   PLAYER HEADER
-========================================================= */
 
 .player-header {
 
@@ -656,7 +645,7 @@ body::after {
 
 
 /* =========================================================
-   PLAYER AREA
+   PLAYER CONTAINER
 ========================================================= */
 
 .player-container {
@@ -669,8 +658,7 @@ body::after {
 
     min-height: 280px;
 
-    background:
-        #000;
+    background: #000;
 }
 
 
@@ -993,7 +981,7 @@ body::after {
 
 
 /* =========================================================
-   FOOTER
+   SITE FOOTER
 ========================================================= */
 
 .site-footer {
@@ -1013,6 +1001,478 @@ body::after {
 .site-footer strong {
 
     color: #71717a;
+}
+
+
+/* =========================================================
+   RXV TELEGRAM POPUP
+========================================================= */
+
+#rxv-popup {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999999;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .4s ease,
+        visibility .4s ease;
+}
+
+
+#rxv-popup.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* BACKDROP */
+
+.rxv-popup-backdrop {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(2,3,8,.80);
+
+    backdrop-filter:
+        blur(15px);
+}
+
+
+/* POPUP CARD */
+
+.rxv-popup-card {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 410px;
+
+    padding:
+        32px
+        27px
+        25px;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    border:
+        1px solid rgba(255,255,255,.11);
+
+    border-radius: 28px;
+
+    background:
+        radial-gradient(
+            circle at 50% -20%,
+            rgba(124,58,237,.25),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #11121b,
+            #08090e
+        );
+
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.7),
+        0 0 80px rgba(124,58,237,.15);
+
+    transform:
+        translateY(25px)
+        scale(.94);
+
+    transition:
+        transform .45s cubic-bezier(.2,.8,.2,1);
+}
+
+
+#rxv-popup.show .rxv-popup-card {
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* POPUP GLOW */
+
+.rxv-popup-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    top: -140px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        rgba(124,58,237,.35);
+
+    filter: blur(65px);
+
+    pointer-events: none;
+}
+
+
+/* CLOSE */
+
+.rxv-popup-close {
+
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius: 50%;
+
+    color: #a1a1aa;
+
+    background:
+        rgba(255,255,255,.045);
+
+    font-size: 21px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        .2s ease;
+}
+
+
+.rxv-popup-close:hover {
+
+    color: #fff;
+
+    background:
+        rgba(255,255,255,.1);
+
+    transform:
+        rotate(90deg);
+}
+
+
+/* RXV LOGO */
+
+.rxv-popup-logo {
+
+    position: relative;
+
+    width: 76px;
+    height: 76px;
+
+    margin:
+        0 auto
+        17px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 23px;
+
+    font-size: 23px;
+
+    font-weight: 950;
+
+    letter-spacing: 2px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb
+        );
+
+    box-shadow:
+        0 15px 40px rgba(124,58,237,.35),
+        inset 0 0 20px rgba(255,255,255,.1);
+
+    animation:
+        rxvLogoPulse 2.5s infinite;
+}
+
+
+/* BADGE */
+
+.rxv-popup-badge {
+
+    position: relative;
+
+    display: inline-block;
+
+    padding:
+        6px
+        11px;
+
+    margin-bottom: 12px;
+
+    border:
+        1px solid rgba(139,92,246,.2);
+
+    border-radius: 50px;
+
+    color: #c4b5fd;
+
+    background:
+        rgba(124,58,237,.08);
+
+    font-size: 8px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+}
+
+
+/* POPUP TITLE */
+
+.rxv-popup-card h2 {
+
+    position: relative;
+
+    color: #fff;
+
+    font-size: 26px;
+
+    font-weight: 900;
+
+    letter-spacing: -.6px;
+}
+
+
+/* POPUP DESCRIPTION */
+
+.rxv-popup-card p {
+
+    position: relative;
+
+    max-width: 310px;
+
+    margin:
+        10px auto 0;
+
+    color: #85858f;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+}
+
+
+.rxv-popup-card p strong {
+
+    color: #d4d4d8;
+
+    font-weight: 700;
+}
+
+
+/* FEATURES */
+
+.rxv-popup-features {
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 8px;
+
+    margin:
+        22px 0;
+}
+
+
+.rxv-popup-features > div {
+
+    padding:
+        12px 6px;
+
+    border:
+        1px solid rgba(255,255,255,.055);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.025);
+}
+
+
+.rxv-popup-features span {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 17px;
+}
+
+
+.rxv-popup-features label {
+
+    color: #71717a;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+}
+
+
+/* JOIN BUTTON */
+
+.rxv-popup-join {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    width: 100%;
+
+    min-height: 50px;
+
+    padding:
+        0 17px;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    border:
+        1px solid rgba(139,92,246,.35);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb
+        );
+
+    box-shadow:
+        0 12px 30px rgba(37,99,235,.2);
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+}
+
+
+.rxv-popup-join:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.1);
+
+    box-shadow:
+        0 16px 40px rgba(124,58,237,.3);
+}
+
+
+.rxv-telegram-icon {
+
+    font-size: 17px;
+}
+
+
+.rxv-arrow {
+
+    position: absolute;
+
+    right: 16px;
+
+    font-size: 17px;
+
+    transition:
+        transform .2s ease;
+}
+
+
+.rxv-popup-join:hover .rxv-arrow {
+
+    transform:
+        translateX(4px);
+}
+
+
+/* POPUP BRAND */
+
+.rxv-popup-brand {
+
+    position: relative;
+
+    margin-top: 17px;
+
+    color: #3f3f46;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
 }
 
 
@@ -1084,6 +1544,29 @@ body::after {
 
     100% {
         transform: translateX(300%);
+    }
+}
+
+
+@keyframes rxvLogoPulse {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+
+        box-shadow:
+            0 15px 40px rgba(124,58,237,.35),
+            inset 0 0 20px rgba(255,255,255,.1);
+    }
+
+    50% {
+
+        transform: scale(1.035);
+
+        box-shadow:
+            0 18px 55px rgba(124,58,237,.5),
+            inset 0 0 25px rgba(255,255,255,.12);
     }
 }
 
@@ -1210,6 +1693,60 @@ body::after {
 
         padding: 15px;
     }
+
+
+    /* POPUP */
+
+    #rxv-popup {
+
+        padding: 15px;
+    }
+
+
+    .rxv-popup-card {
+
+        max-width: 360px;
+
+        padding:
+            27px
+            19px
+            21px;
+
+        border-radius: 24px;
+    }
+
+
+    .rxv-popup-logo {
+
+        width: 68px;
+        height: 68px;
+
+        margin-bottom: 14px;
+
+        border-radius: 20px;
+
+        font-size: 21px;
+    }
+
+
+    .rxv-popup-card h2 {
+
+        font-size: 23px;
+    }
+
+
+    .rxv-popup-card p {
+
+        font-size: 11px;
+    }
+
+
+    .rxv-popup-features {
+
+        margin:
+            18px 0;
+    }
+
 }
 
 
@@ -1229,6 +1766,7 @@ body::after {
 
         font-size: 24px;
     }
+
 }
 
 </style>
@@ -1240,7 +1778,7 @@ body::after {
 
 
 <!-- =======================================================
-     LOADING SCREEN
+     INITIAL LOADING SCREEN
 ======================================================= -->
 
 <div id="loading-screen">
@@ -1248,7 +1786,7 @@ body::after {
     <div class="loader">
 
         <div class="loader-logo">
-            R
+            RXV
         </div>
 
         <div class="loader-title">
@@ -1268,7 +1806,7 @@ body::after {
 
 
 <!-- =======================================================
-     MAIN
+     MAIN CONTENT
 ======================================================= -->
 
 <main id="main-content">
@@ -1281,7 +1819,7 @@ body::after {
         <div class="brand">
 
             <div class="brand-icon">
-                R
+                RXV
             </div>
 
             <div class="brand-info">
@@ -1341,7 +1879,7 @@ body::after {
         <p>
             Welcome to RAREXVAULT. Enjoy a clean,
             fast and immersive viewing experience
-            through our streaming portal.
+            through our premium streaming portal.
         </p>
 
     </section>
@@ -1381,23 +1919,25 @@ body::after {
         >
 
 
-            <!-- IFRAME -->
-
             <iframe
                 id="videoPlayer"
+
                 allow="
                     autoplay;
                     fullscreen;
                     picture-in-picture;
                     encrypted-media
                 "
+
                 allowfullscreen
+
                 referrerpolicy="no-referrer"
+
                 scrolling="no"
             ></iframe>
 
 
-            <!-- LOADING -->
+            <!-- PLAYER LOADING -->
 
             <div id="player-loading">
 
@@ -1434,7 +1974,7 @@ body::after {
 
 
 
-        <!-- FOOTER -->
+        <!-- PLAYER FOOTER -->
 
         <div class="player-footer">
 
@@ -1459,7 +1999,7 @@ body::after {
 
 
 
-    <!-- INFO -->
+    <!-- INFO CARDS -->
 
     <section class="info-grid">
 
@@ -1475,8 +2015,8 @@ body::after {
             </h3>
 
             <p>
-                A lightweight player shell designed
-                for fast loading.
+                A lightweight and responsive
+                streaming experience.
             </p>
 
         </div>
@@ -1493,8 +2033,8 @@ body::after {
             </h3>
 
             <p>
-                Your selected stream is loaded
-                automatically from the JSON database.
+                Your selected stream loads
+                automatically from the database.
             </p>
 
         </div>
@@ -1511,8 +2051,8 @@ body::after {
             </h3>
 
             <p>
-                Cinematic dark UI with responsive
-                desktop and mobile support.
+                Cinematic dark design built for
+                desktop and mobile devices.
             </p>
 
         </div>
@@ -1536,22 +2076,159 @@ body::after {
 
 
 
+<!-- =======================================================
+     RXV TELEGRAM POPUP
+======================================================= -->
+
+<div id="rxv-popup">
+
+
+    <div class="rxv-popup-backdrop"></div>
+
+
+    <div class="rxv-popup-card">
+
+
+        <!-- CLOSE -->
+
+        <button
+            class="rxv-popup-close"
+            id="rxvPopupClose"
+            aria-label="Close popup"
+        >
+            ×
+        </button>
+
+
+        <!-- RXV LOGO -->
+
+        <div class="rxv-popup-logo">
+            RXV
+        </div>
+
+
+        <!-- BADGE -->
+
+        <div class="rxv-popup-badge">
+            ✦ RXV COMMUNITY
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h2>
+            Join Our Channels
+        </h2>
+
+
+        <!-- DESCRIPTION -->
+
+        <p>
+            For
+            <strong>Clips, Links</strong>
+            and
+            <strong>Premium Contents</strong>
+        </p>
+
+
+        <!-- FEATURES -->
+
+        <div class="rxv-popup-features">
+
+
+            <div>
+
+                <span>
+                    🎬
+                </span>
+
+                <label>
+                    Clips
+                </label>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    🔗
+                </span>
+
+                <label>
+                    Links
+                </label>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    ⭐
+                </span>
+
+                <label>
+                    Premium
+                </label>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- TELEGRAM BUTTON -->
+
+        <a
+            href="https://t.me/+tirUqNl9KsswNTI1"
+
+            target="_blank"
+
+            rel="noopener noreferrer"
+
+            class="rxv-popup-join"
+        >
+
+            <span class="rxv-telegram-icon">
+                ✈
+            </span>
+
+            JOIN TELEGRAM
+
+            <span class="rxv-arrow">
+                →
+            </span>
+
+        </a>
+
+
+        <!-- BRAND -->
+
+        <div class="rxv-popup-brand">
+            RXV • RAREXVAULT
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
 <script>
 
 /* =========================================================
    RAREXVAULT
-   FINAL IFRAME VERSION
+   MAIN APPLICATION
 
-   IMPORTANT:
-   This page DOES NOT use Shaka Player.
-
-   Your JSON contains player-page URLs in iframeSrc,
-   therefore those URLs are loaded inside an iframe.
+   iframeSrc in your JSON contains PLAYER PAGE URLs,
+   so the outer page intentionally uses an iframe.
 ========================================================= */
 
 
 /* =========================================================
-   INITIALIZE
+   INITIALIZE APP
 ========================================================= */
 
 async function initializeApp() {
@@ -1647,7 +2324,7 @@ async function initializeApp() {
 
 
         /* =================================================
-           CHECK PLAYER URL
+           VALIDATE URL
         ================================================= */
 
         if (!streamData.iframeSrc) {
@@ -1700,7 +2377,7 @@ async function initializeApp() {
 
 
         /* =================================================
-           LOAD IFRAME
+           LOAD PLAYER
         ================================================= */
 
         loadIframe(
@@ -1726,7 +2403,7 @@ async function initializeApp() {
 
 
         /* =================================================
-           HIDE INITIAL LOADING
+           REMOVE INITIAL LOADING SCREEN
         ================================================= */
 
         setTimeout(() => {
@@ -1750,11 +2427,13 @@ async function initializeApp() {
 
             setTimeout(() => {
 
+
                 if (loadingScreen) {
 
                     loadingScreen.remove();
 
                 }
+
 
             }, 600);
 
@@ -1799,9 +2478,7 @@ function loadIframe(
         );
 
 
-    /* =====================================================
-       RESET
-    ===================================================== */
+    /* RESET */
 
     errorScreen.style.display =
         'none';
@@ -1824,7 +2501,7 @@ function loadIframe(
 
 
     /* =====================================================
-       IFRAME LOAD
+       IFRAME LOAD EVENT
     ===================================================== */
 
     iframe.onload =
@@ -1832,8 +2509,7 @@ function loadIframe(
 
 
             console.log(
-                'RAREXVAULT PLAYER LOADED:',
-                iframeUrl
+                'RAREXVAULT PLAYER LOADED'
             );
 
 
@@ -1882,7 +2558,7 @@ function loadIframe(
 
 
     /* =====================================================
-       SET URL
+       SET PLAYER URL
     ===================================================== */
 
     iframe.src =
@@ -1912,12 +2588,6 @@ function renderErrorUI(
         );
 
 
-    const playerStatus =
-        document.getElementById(
-            'player-status'
-        );
-
-
     const iframe =
         document.getElementById(
             'videoPlayer'
@@ -1932,22 +2602,8 @@ function renderErrorUI(
         'none';
 
 
-    playerStatus.textContent =
-        'STREAM ERROR';
-
-
     errorScreen.style.display =
         'flex';
-
-
-    if (message) {
-
-        console.error(
-            'RAREXVAULT:',
-            message
-        );
-
-    }
 
 
     document.getElementById(
@@ -1967,11 +2623,105 @@ function renderErrorUI(
     ).textContent =
         'Stream Unavailable';
 
+
+    if (message) {
+
+        console.error(
+            'RAREXVAULT:',
+            message
+        );
+
+    }
+
 }
 
 
 /* =========================================================
-   START
+   RXV TELEGRAM POPUP
+========================================================= */
+
+const rxvPopup =
+    document.getElementById(
+        'rxv-popup'
+    );
+
+
+const rxvPopupClose =
+    document.getElementById(
+        'rxvPopupClose'
+    );
+
+
+/* =========================================================
+   SHOW POPUP
+========================================================= */
+
+setTimeout(() => {
+
+
+    if (rxvPopup) {
+
+        rxvPopup.classList.add(
+            'show'
+        );
+
+    }
+
+
+}, 1800);
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+if (rxvPopupClose) {
+
+    rxvPopupClose.addEventListener(
+        'click',
+        () => {
+
+            rxvPopup.classList.remove(
+                'show'
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CLICK BACKDROP TO CLOSE
+========================================================= */
+
+if (rxvPopup) {
+
+    rxvPopup.addEventListener(
+        'click',
+        event => {
+
+
+            if (
+                event.target.classList.contains(
+                    'rxv-popup-backdrop'
+                )
+            ) {
+
+                rxvPopup.classList.remove(
+                    'show'
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   START APPLICATION
 ========================================================= */
 
 document.addEventListener(
